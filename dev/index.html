@@ -9,7 +9,7 @@ Platform Info:
   LLVM: libLLVM-6.0.0 (ORCJIT, skylake)
 Environment:
   JULIA_EDITOR = code</code></pre><h2><a class="nav-anchor" id="Basic-usage-1" href="#Basic-usage-1">Basic usage</a></h2><p>This package provides two functions for a set <span>$s$</span>,</p><pre><code class="language-julia">project!(s, v, y)</code></pre><p>overwrites <code>v</code> by projection of <code>y</code> to set <code>s</code>. </p><pre><code class="language-julia">project(s, y)</code></pre><p>simply returns projection of <code>y</code> to set <code>s</code>.</p><h2><a class="nav-anchor" id="Projection-operators-1" href="#Projection-operators-1">Projection operators</a></h2><pre><code class="language-julia">using Projections</code></pre><h3><a class="nav-anchor" id="Ball-1" href="#Ball-1">Ball</a></h3><p>Projection of <span>$y$</span> onto the closed ball <span>$S = \{x \in \mathbb{R}^n: \|x - c\|_2 \le r\}$</span> is $     \text{proj}<em>S(y)</em>i = \begin{cases}     c + r \frac{y - c}{\|y - c\|<em>2} &amp; \|y - c\|</em>2 &gt; r \
-    y &amp; \|y - c\|_2 \le r     \end{cases}. $</p><pre><code class="language-julia">y = [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5]
+    y &amp; \|y - c\|_2 \le r     \end{cases}. $ Computational cost is <span>$O(n)$</span>.</p><pre><code class="language-julia">y = [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5]
 # norm is less than 5
 sqrt(sum(abs2, y)) </code></pre><pre><code class="language-none">4.183300132670378</code></pre><pre><code class="language-julia"># projection onto the unit ball
 project(Ball(length(y)), y)</code></pre><pre><code class="language-none">7-element Array{Float64,1}:
@@ -37,7 +37,7 @@ project(Ball(ones(length(y)), 1.), y)</code></pre><pre><code class="language-non
  1.101015254455221  
  1.3030457633656631</code></pre><h3><a class="nav-anchor" id="Box-1" href="#Box-1">Box</a></h3><p>Projection of <span>$y$</span> onto a closed box <span>$S = [a_1, b_1] \times \cdots \times [a_n, b_n]$</span> is $     \text{proj}<em>S(y)</em>i = \begin{cases}     a<em>i &amp; y</em>i &lt; a<em>i \
     y</em>i &amp; y<em>i \in [a</em>i, b<em>i] \
-    b</em>i &amp; y<em>i &gt; b</em>i     \end{cases}. $</p><pre><code class="language-julia">y = [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5]
+    b</em>i &amp; y<em>i &gt; b</em>i     \end{cases}. $ Computational cost is <span>$O(n)$</span>.</p><pre><code class="language-julia">y = [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5]
 a = fill(-1.0, 7) # vector of all -1
 b = fill( 1.0, 7) # vector of all  1
 project(Box(a, b), y)</code></pre><pre><code class="language-none">7-element Array{Float64,1}:
@@ -47,4 +47,12 @@ project(Box(a, b), y)</code></pre><pre><code class="language-none">7-element Arr
   0.0
   0.5
   1.0
-  1.0</code></pre><h2><a class="nav-anchor" id="Contributing-1" href="#Contributing-1">Contributing</a></h2><p>You are welcome to contribute to the Projections.jl package. To add a projection operator, e.g., projection to the affine set, to the package, follow these steps:</p><ol><li>Fork the Projections.jl package.  </li><li>Add <code>affine.jl</code> to the <code>src</code> folder that implements the type <code>Affine</code>, the function <code>project!(s::Affine, v, y)</code>, and the function <code>project(s, y)</code>. </li><li>Add a line <code>include(&quot;affine.jl&quot;)</code> to the <code>/src/Projections.jl</code> file.</li><li>Add test file <code>affine_test.jl</code> to the <code>test</code> folder.</li><li>Add a line <code>include(&quot;affine_test.jl&quot;)</code> to the <code>/test/runtests.jl</code> file.  </li><li>Make sure that <code>Pkg.test(&quot;Projections&quot;)</code> successfully runs.</li><li>Add documentation for the new projection operator to the <code>Projection operators</code> section of Jupyter notebook <code>/docs/Projections.jl</code>. </li><li>Issue a pull request.</li></ol><footer><hr/></footer></article></body></html>
+  1.0</code></pre><h3><a class="nav-anchor" id="Simplex-1" href="#Simplex-1">Simplex</a></h3><p>There is no analytical solution for the projection of a point <span>$y$</span> onto the simplex <span>$S = \{x \in \mathbb{R}^n: x_i \ge 0, \sum_i x_i = r\}$</span>. An <span>$O(n \log n)$</span> given by <a href="https://stanford.edu/~jduchi/projects/DuchiShSiCh08.pdf">Duchi, Shalev-Shwartz, Singer, and Chandra</a> is implemented.</p><pre><code class="language-julia">y = [1., 1., 1.]
+# canonical probability simplex
+project(Simplex(), y) </code></pre><pre><code class="language-none">3-element Array{Float64,1}:
+ 0.33333333333333337
+ 0.33333333333333337
+ 0.33333333333333337</code></pre><pre><code class="language-julia">project(Simplex(2), y) </code></pre><pre><code class="language-none">3-element Array{Float64,1}:
+ 0.6666666666666667
+ 0.6666666666666667
+ 0.6666666666666667</code></pre><h2><a class="nav-anchor" id="Contributing-1" href="#Contributing-1">Contributing</a></h2><p>You are welcome to contribute to the Projections.jl package. To add a projection operator, e.g., projection to the affine set, to the package, follow these steps:</p><ol><li>Fork the Projections.jl package.  </li><li>Add <code>affine.jl</code> to the <code>src</code> folder that implements the type <code>Affine</code>, the function <code>project!(s::Affine, v, y)</code>, and the function <code>project(s, y)</code>. </li><li>Add a line <code>include(&quot;affine.jl&quot;)</code> to the <code>/src/Projections.jl</code> file.</li><li>Add test file <code>affine_test.jl</code> to the <code>test</code> folder.</li><li>Add a line <code>include(&quot;affine_test.jl&quot;)</code> to the <code>/test/runtests.jl</code> file.  </li><li>Make sure that <code>Pkg.test(&quot;Projections&quot;)</code> successfully runs.</li><li>Add documentation for the new projection operator to the <code>Projection operators</code> section of Jupyter notebook <code>/docs/Projections.jl</code>. </li><li>Issue a pull request.</li></ol><footer><hr/></footer></article></body></html>
