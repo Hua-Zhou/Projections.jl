@@ -8,7 +8,34 @@ Platform Info:
   LIBM: libopenlibm
   LLVM: libLLVM-6.0.0 (ORCJIT, skylake)
 Environment:
-  JULIA_EDITOR = code</code></pre><h2><a class="nav-anchor" id="Basic-usage-1" href="#Basic-usage-1">Basic usage</a></h2><p>This package provides two functions for a set <span>$s$</span>,</p><pre><code class="language-julia">project!(s, v, y)</code></pre><p>overwrites <code>v</code> by projection of <code>y</code> to set <code>s</code>. </p><pre><code class="language-julia">project(s, y)</code></pre><p>simply returns projection of <code>y</code> to set <code>s</code>.</p><h2><a class="nav-anchor" id="Projection-operators-1" href="#Projection-operators-1">Projection operators</a></h2><pre><code class="language-julia">using Projections</code></pre><h3><a class="nav-anchor" id="Box-1" href="#Box-1">Box</a></h3><p>Projection of <span>$y$</span> onto a closed box <span>$S = [a_1, b_1] \times \cdots \times [a_n, b_n]$</span> is $     \text{proj}<em>S(y)</em>i = \begin{cases}     a<em>i &amp; y</em>i &lt; a<em>i \
+  JULIA_EDITOR = code</code></pre><h2><a class="nav-anchor" id="Basic-usage-1" href="#Basic-usage-1">Basic usage</a></h2><p>This package provides two functions for a set <span>$s$</span>,</p><pre><code class="language-julia">project!(s, v, y)</code></pre><p>overwrites <code>v</code> by projection of <code>y</code> to set <code>s</code>. </p><pre><code class="language-julia">project(s, y)</code></pre><p>simply returns projection of <code>y</code> to set <code>s</code>.</p><h2><a class="nav-anchor" id="Projection-operators-1" href="#Projection-operators-1">Projection operators</a></h2><pre><code class="language-julia">using Projections</code></pre><h3><a class="nav-anchor" id="Ball-1" href="#Ball-1">Ball</a></h3><p>Projection of <span>$y$</span> onto the closed ball <span>$S = \{x \in \mathbb{R}^n: \|x - c\|_2 \le r\}$</span> is $     \text{proj}<em>S(y)</em>i = \begin{cases}     c + r \frac{y - c}{\|y - c\|<em>2} &amp; \|y - c\|</em>2 &gt; r \
+    y &amp; \|y - c\|_2 \le r     \end{cases}. $</p><pre><code class="language-julia">y = [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5]
+# norm is less than 5
+sqrt(sum(abs2, y)) </code></pre><pre><code class="language-none">4.183300132670378</code></pre><pre><code class="language-julia"># projection onto the unit ball
+project(Ball(length(y)), y)</code></pre><pre><code class="language-none">7-element Array{Float64,1}:
+ -0.5976143046671968 
+ -0.3585685828003181 
+ -0.11952286093343936
+  0.0                
+  0.11952286093343936
+  0.3585685828003181 
+  0.5976143046671968</code></pre><pre><code class="language-julia"># projection onto ball with center 0 and radius 5
+project(Ball(length(y), 5.), y)</code></pre><pre><code class="language-none">7-element Array{Float64,1}:
+ -2.5
+ -1.5
+ -0.5
+  0.0
+  0.5
+  1.5
+  2.5</code></pre><pre><code class="language-julia"># projection onto ball with center (1,...,1) and radius 1
+project(Ball(ones(length(y)), 1.), y)</code></pre><pre><code class="language-none">7-element Array{Float64,1}:
+ 0.29289321881345254
+ 0.4949237277238947 
+ 0.6969542366343369 
+ 0.7979694910895578 
+ 0.8989847455447789 
+ 1.101015254455221  
+ 1.3030457633656631</code></pre><h3><a class="nav-anchor" id="Box-1" href="#Box-1">Box</a></h3><p>Projection of <span>$y$</span> onto a closed box <span>$S = [a_1, b_1] \times \cdots \times [a_n, b_n]$</span> is $     \text{proj}<em>S(y)</em>i = \begin{cases}     a<em>i &amp; y</em>i &lt; a<em>i \
     y</em>i &amp; y<em>i \in [a</em>i, b<em>i] \
     b</em>i &amp; y<em>i &gt; b</em>i     \end{cases}. $</p><pre><code class="language-julia">y = [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5]
 a = fill(-1.0, 7) # vector of all -1

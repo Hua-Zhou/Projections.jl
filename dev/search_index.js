@@ -41,6 +41,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "#Ball-1",
+    "page": "Projections.jl",
+    "title": "Ball",
+    "category": "section",
+    "text": "Projection of y onto the closed ball S = x in mathbbR^n x - c_2 le r is $     \\text{proj}S(y)i = \\begin{cases}     c + r \\frac{y - c}{\\|y - c\\|2} & \\|y - c\\|2 > r \\\n    y & \\|y - c\\|_2 \\le r     \\end{cases}. $y = [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5]\n# norm is less than 5\nsqrt(sum(abs2, y)) 4.183300132670378# projection onto the unit ball\nproject(Ball(length(y)), y)7-element Array{Float64,1}:\n -0.5976143046671968 \n -0.3585685828003181 \n -0.11952286093343936\n  0.0                \n  0.11952286093343936\n  0.3585685828003181 \n  0.5976143046671968# projection onto ball with center 0 and radius 5\nproject(Ball(length(y), 5.), y)7-element Array{Float64,1}:\n -2.5\n -1.5\n -0.5\n  0.0\n  0.5\n  1.5\n  2.5# projection onto ball with center (1,...,1) and radius 1\nproject(Ball(ones(length(y)), 1.), y)7-element Array{Float64,1}:\n 0.29289321881345254\n 0.4949237277238947 \n 0.6969542366343369 \n 0.7979694910895578 \n 0.8989847455447789 \n 1.101015254455221  \n 1.3030457633656631"
+},
+
+{
     "location": "#Box-1",
     "page": "Projections.jl",
     "title": "Box",
