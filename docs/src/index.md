@@ -54,6 +54,90 @@ simply returns projection of `y` to set `s`.
 using Projections
 ```
 
+### Ball
+
+Projection of $y$ onto the closed ball $S = \{x \in \mathbb{R}^n: \|x - c\|_2 \le r\}$ is
+$$
+    \text{proj}_S(y)_i = \begin{cases}
+    c + r \frac{y - c}{\|y - c\|_2} & \|y - c\|_2 > r \\
+    y & \|y - c\|_2 \le r
+    \end{cases}.
+$$
+
+
+```julia
+y = [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5]
+# norm is less than 5
+sqrt(sum(abs2, y)) 
+```
+
+
+
+
+    4.183300132670378
+
+
+
+
+```julia
+# projection onto the unit ball
+project(Ball(length(y)), y)
+```
+
+
+
+
+    7-element Array{Float64,1}:
+     -0.5976143046671968 
+     -0.3585685828003181 
+     -0.11952286093343936
+      0.0                
+      0.11952286093343936
+      0.3585685828003181 
+      0.5976143046671968 
+
+
+
+
+```julia
+# projection onto ball with center 0 and radius 5
+project(Ball(length(y), 5.), y)
+```
+
+
+
+
+    7-element Array{Float64,1}:
+     -2.5
+     -1.5
+     -0.5
+      0.0
+      0.5
+      1.5
+      2.5
+
+
+
+
+```julia
+# projection onto ball with center (1,...,1) and radius 1
+project(Ball(ones(length(y)), 1.), y)
+```
+
+
+
+
+    7-element Array{Float64,1}:
+     0.29289321881345254
+     0.4949237277238947 
+     0.6969542366343369 
+     0.7979694910895578 
+     0.8989847455447789 
+     1.101015254455221  
+     1.3030457633656631 
+
+
+
 ### Box
 
 Projection of $y$ onto a closed box $S = [a_1, b_1] \times \cdots \times [a_n, b_n]$ is
