@@ -22,5 +22,6 @@ Project point `y` to the box set `b`.
 function project(); end
 
 include("box.jl")
+include("ball.jl")
 
 end
