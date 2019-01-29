@@ -3,10 +3,10 @@
 
 Projections.jl is a Julia package that collects commonly used projection operators. It is useful for optimization algorithms such as projected gradient descent.
 
-Given a point $y \in \mathbb{R}^n$ and a set $S \subset \mathbb{R}^n$, the projection of $y$ onto $S$ is defined as
+Given a point $y \in \mathbb{R}^n$ and a set $S \subset \mathbb{R}^n$, the projection of $y$ onto $S$ is defined as  
 $$
-    \text{proj}_S(y) = \arg \min_{x \in S} \|y - x\|_2^2.
-$$
+    \text{proj}_S(y) = \arg \min_{x \in S} \|x - y\|_2^2.
+$$   
 If $S$ is a closed convex set, then $\text{proj}_S(y)$ is unique.
 
 ## Installation
@@ -37,11 +37,11 @@ versioninfo()
 
 ## Basic usage
 
-This package provides two functions for a set $s$,
+This package provides two functions for each set:
 ```julia
 project!(s, v, y)
 ```
-overwrites `v` by projection of `y` to set `s`. 
+overwrites `v` by projection of `y` to set `s` and 
 ```julia
 project(s, y)
 ```
@@ -56,13 +56,13 @@ using Projections
 
 ### Ball
 
-Projection of $y$ onto the closed ball $S = \{x \in \mathbb{R}^n: \|x - c\|_2 \le r\}$ is
-$$
-    \text{proj}_S(y)_i = \begin{cases}
-    c + r \frac{y - c}{\|y - c\|_2} & \|y - c\|_2 > r \\
-    y & \|y - c\|_2 \le r
-    \end{cases}.
-$$
+Projection of $y$ onto the closed ball $S = \{x \in \mathbb{R}^n: \|x - c\|_2 \le r\}$ is  
+$$  
+    \text{proj}_S(y)_i = \begin{cases}  
+    c + r \frac{y - c}{\|y - c\|_2} & \|y - c\|_2 > r \\  
+    y & \|y - c\|_2 \le r  
+    \end{cases}.  
+$$  
 Computational cost is $O(n)$.
 
 
@@ -141,14 +141,14 @@ project(Ball(ones(length(y)), 1.), y)
 
 ### Box
 
-Projection of $y$ onto a closed box $S = [a_1, b_1] \times \cdots \times [a_n, b_n]$ is
-$$
-    \text{proj}_S(y)_i = \begin{cases}
-    a_i & y_i < a_i \\
-    y_i & y_i \in [a_i, b_i] \\
-    b_i & y_i > b_i
-    \end{cases}.
-$$
+Projection of $y$ onto a closed box $S = [a_1, b_1] \times \cdots \times [a_n, b_n]$ is  
+$$  
+    \text{proj}_S(y)_i = \begin{cases}  
+    a_i & y_i < a_i \\  
+    y_i & y_i \in [a_i, b_i] \\  
+    b_i & y_i > b_i  
+    \end{cases}.  
+$$   
 Computational cost is $O(n)$.
 
 
@@ -175,7 +175,7 @@ project(Box(a, b), y)
 
 ### Simplex
 
-There is no analytical solution for the projection of a point $y$ onto the simplex $S = \{x \in \mathbb{R}^n: x_i \ge 0, \sum_i x_i = r\}$. An $O(n \log n)$ given by [Duchi, Shalev-Shwartz, Singer, and Chandra](https://stanford.edu/~jduchi/projects/DuchiShSiCh08.pdf) is implemented.
+There is no analytical solution for the projection of a point $y$ onto the simplex $S = \{x \in \mathbb{R}^n: x_i \ge 0, \sum_i x_i = r\}$. An $O(n \log n)$ algorithm given by [Duchi, Shalev-Shwartz, Singer, and Chandra](https://stanford.edu/~jduchi/projects/DuchiShSiCh08.pdf) is implemented.
 
 
 ```julia
