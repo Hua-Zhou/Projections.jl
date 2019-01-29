@@ -1,0 +1,32 @@
+language: julia
+sudo: required
+os:
+  - linux
+  - osx
+julia:
+  - 0.7
+  - 1.0
+  - nightly
+matrix:
+  allow_failures:
+    - julia: nightly
+notifications:
+  email: false
+git:
+  depth: 99999999
+
+#before_script:
+#  - julia -e 'using Pkg; Pkg.add(PackageSpec(name="Compose", rev="master"))'
+#  - julia -e 'using Pkg; Pkg.add(PackageSpec(name="Gadfly", rev="master"))'
+after_success:
+  - julia -e 'using Pkg, Projections; cd(joinpath(dirname(pathof(Projections)), "..")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder()); Coveralls.submit(process_folder())'
+
+jobs:
+  include:
+    - stage: "Documentation"
+      julia: 1.0
+      os: osx
+      script:
+        - julia -e 'using Pkg; Pkg.add("Documenter")'
+        - julia -e 'using Projections; include(joinpath(dirname(pathof(Projections)), "..", "docs", "make.jl"))'
+      after_script: skip
