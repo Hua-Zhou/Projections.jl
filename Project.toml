@@ -1,0 +1,15 @@
+name = "Projections"
+uuid = "7b5bdbf0-330a-5aa1-9113-5af3c2d93005"
+keywords = ["projection", "optimization"]
+author = ["Hua Zhou <huazhou@ucla.edu>", "Kenneth Lange <klange@ucla.edu>"]
+version = "0.1.0"
+
+[deps]
+
+[compat]
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
