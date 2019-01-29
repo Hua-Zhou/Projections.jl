@@ -23,5 +23,6 @@ function project(); end
 
 include("box.jl")
 include("ball.jl")
+include("simplex.jl")
 
 end

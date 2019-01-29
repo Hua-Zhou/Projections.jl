@@ -63,6 +63,7 @@ $$
     y & \|y - c\|_2 \le r
     \end{cases}.
 $$
+Computational cost is $O(n)$.
 
 
 ```julia
@@ -148,6 +149,7 @@ $$
     b_i & y_i > b_i
     \end{cases}.
 $$
+Computational cost is $O(n)$.
 
 
 ```julia
@@ -168,6 +170,42 @@ project(Box(a, b), y)
       0.5
       1.0
       1.0
+
+
+
+### Simplex
+
+There is no analytical solution for the projection of a point $y$ onto the simplex $S = \{x \in \mathbb{R}^n: x_i \ge 0, \sum_i x_i = r\}$. An $O(n \log n)$ given by [Duchi, Shalev-Shwartz, Singer, and Chandra](https://stanford.edu/~jduchi/projects/DuchiShSiCh08.pdf) is implemented.
+
+
+```julia
+y = [1., 1., 1.]
+# canonical probability simplex
+project(Simplex(), y) 
+```
+
+
+
+
+    3-element Array{Float64,1}:
+     0.33333333333333337
+     0.33333333333333337
+     0.33333333333333337
+
+
+
+
+```julia
+project(Simplex(2), y) 
+```
+
+
+
+
+    3-element Array{Float64,1}:
+     0.6666666666666667
+     0.6666666666666667
+     0.6666666666666667
 
 
 
